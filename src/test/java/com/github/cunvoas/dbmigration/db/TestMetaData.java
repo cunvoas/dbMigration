@@ -33,7 +33,7 @@ public class TestMetaData {
 	/**
 	 * Test method for {@link com.github.cunvoas.dbmigration.db.MetaData#getSourceTables()}.
 	 */
-	@Test
+//	@Test
 	public void testGetSourceTables() {
 		tested = new MetaData();
 		
@@ -67,7 +67,7 @@ public class TestMetaData {
 	/**
 	 * Test method for {@link com.github.cunvoas.dbmigration.db.MetaData#getColumns(String)}.
 	 */
-	@Test
+//	@Test
 	public void testGetColumns() {
 		tested = new MetaData();
 		
