@@ -69,11 +69,11 @@ public class ApplicationMigration {
 		options.addOption(DST_DC, true, "Classe du driver JDBC de la base Source");
 		options.addOption(DST_DS, true, "URL JDBC de la datasource de la Source");
 		options.addOption(DST_USR, true, "Utilisateur de la base Source");
-		options.addOption(DST_PWD, false, "Mot de passe de la base Source");
+		options.addOption(DST_PWD, true, "Mot de passe de la base Source");
 		
 		options.addOption(MODE, true, "Mode d'utilisation de l'outil de migration : audit | recopie");
 		
-		options.addOption(CFG_FILE, false, "Fichier d'exclusion des tables et colonnes sources.");
+		options.addOption(CFG_FILE, true, "Fichier d'exclusion des tables et colonnes sources.");
 	}
 	
 
@@ -145,13 +145,13 @@ public class ApplicationMigration {
 		destination.setDatasource(cmd.getOptionValue(DST_DS));
 		destination.setUser(cmd.getOptionValue(DST_USR));
 		pass = cmd.getOptionValue(DST_PWD);
-		if (pass==null) {
+		if ("NULL".equals(pass)) {
 			pass= StringUtils.EMPTY;
 		}
 		destination.setPass(pass);
 		
 		String config = cmd.getOptionValue(CFG_FILE);
-		if (MODE_RECOPIE.equals(mode) && config!=null && (new File(config)).isFile()) {
+		if (config!=null && (new File(config)).isFile()) {
 			MappingExclusionReader reader = new MappingExclusionReader();
 			List<MappingExclusion> exclusions = reader.read(new File(config));
 			ExclusionConfig.getINSTANCE().setExclusion(exclusions);

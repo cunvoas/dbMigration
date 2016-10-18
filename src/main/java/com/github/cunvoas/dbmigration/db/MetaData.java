@@ -84,7 +84,7 @@ public class MetaData {
 			
 			int idxCol=1;
 			for (int i=1; i<=nb; i++) {
-				
+				int j=1;
 				if (! ExclusionConfig.getINSTANCE().hasExclusion(table, rsm.getColumnName(i))) {
 
 					ColumnDescriptor descriptor = new ColumnDescriptor();

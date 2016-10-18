@@ -42,7 +42,9 @@ public class ExclusionConfig {
 			return false;
 		}
 		
-		String exclusion = String.format("%s.%s", table.toLowerCase(), column.toLowerCase());
+		MappingExclusion exclusion = new MappingExclusion();
+		exclusion.setTable(table.toLowerCase());
+		exclusion.setColumn(column.toLowerCase());
 		return this.exclusions.contains(exclusion);
 	}
 	
