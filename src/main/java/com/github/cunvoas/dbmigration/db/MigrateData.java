@@ -20,6 +20,7 @@ public class MigrateData {
 	
 	private Connection sourceConn;
 	private Connection destinationConn;
+	private String destinationDatabase;
 	
 	private int batchFlush=50;
 	
@@ -37,6 +38,7 @@ public class MigrateData {
 		MetaData metaData = new MetaData();
 		metaData.setSource(ConnectionProvider.getConnection(source));
 		metaData.setDestination(ConnectionProvider.getConnection(destination));
+		metaData.setDestinationDatabase(destination.getDatabase());
 		
 		List<String> srcTableList = metaData.getSourceTables();
 		List<String> destTableList = metaData.getDestinationTables();
@@ -93,6 +95,7 @@ public class MigrateData {
 		MetaData metaData = new MetaData();
 		metaData.setSource(this.sourceConn);
 		metaData.setDestination(this.destinationConn);
+		metaData.setDestinationDatabase(destinationDatabase);
 		
 		int nblig=0;
 		
@@ -278,6 +281,14 @@ public class MigrateData {
 	private String getVarBinaryAsChar(ResultSet rs, int colIdx) throws SQLException{
 		String nvarchar = rs.getNString(colIdx);
 		return nvarchar;
+	}
+
+	/**
+	 * Setter for destinationDatabase.
+	 * @param destinationDatabase the destinationDatabase to set
+	 */
+	public final void setDestinationDatabase(String destinationDatabase) {
+		this.destinationDatabase = destinationDatabase;
 	}
 	
 //	/**

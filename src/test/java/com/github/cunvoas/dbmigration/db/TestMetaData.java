@@ -38,8 +38,9 @@ public class TestMetaData {
 		tested = new MetaData();
 		
 		try {
-			tested.setSource(ConnectionProvider.getSource());
-			tested.setDestination(ConnectionProvider.getDestination());
+			tested.setSource(ConnectionProvider.getSourceFromProperties());
+			tested.setDestination(ConnectionProvider.getDestinationFromProperties());
+			tested.setDestinationDatabase(ConnectionProvider.getDestinationDatabaseFromProperties());
 			
 			List<String> tables = tested.getSourceTables();
 			
@@ -72,8 +73,8 @@ public class TestMetaData {
 		tested = new MetaData();
 		
 		try {
-			tested.setSource(ConnectionProvider.getSource());
-			tested.setDestination(ConnectionProvider.getDestination());
+			tested.setSource(ConnectionProvider.getSourceFromProperties());
+			tested.setDestination(ConnectionProvider.getDestinationFromProperties());
 			
 			List<ColumnDescriptor> cols = tested.getColumns("search_api_index");
 			

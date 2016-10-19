@@ -16,10 +16,14 @@ public class TestAuditBase {
 		tested = new AuditBase();
 	}
 
-//	@Test
+	//@Test
 	public void test() {
 		try {
-			tested.audit(ConnectionProvider.getSource(), ConnectionProvider.getDestination());
+			tested.audit(
+					ConnectionProvider.getSourceFromProperties(), 
+					ConnectionProvider.getDestinationFromProperties(),
+					ConnectionProvider.getDestinationDatabaseFromProperties()
+					);
 			
 		} catch (Exception e) {
 			fail(e.getMessage());

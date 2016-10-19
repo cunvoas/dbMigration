@@ -20,13 +20,14 @@ import com.github.cunvoas.dbmigration.util.MigrationException;
 public class AuditBase {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuditBase.class);
 	
-	public void audit(Connection source, Connection destination) throws MigrationException {
+	public void audit(Connection source, Connection destination, String destinationDatabase) throws MigrationException {
 		
 		CsvAudit csv=new CsvAudit(new File("/tmp/audit-migration.csv"));
 		
 		MetaData metaData = new MetaData();
 		metaData.setSource(source);
 		metaData.setDestination(destination);
+		metaData.setDestinationDatabase(destinationDatabase);
 		
 		List<String> srcTables = metaData.getSourceTables();
 		List<String> dstTables = metaData.getDestinationTables();

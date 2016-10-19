@@ -32,6 +32,9 @@ public class ApplicationMigration {
 	public static final int CODE_RETOUR_WARN=1;
 	public static final int CODE_RETOUR_ERROR=2;
 	
+	private static final String EMPTY_STRING="NULL";
+	private static final String AD_STRING="AD";
+	
 	
 	private static final String SRC_DB = "src_base";
 	private static final String SRC_DC = "src_class";
@@ -126,18 +129,22 @@ public class ApplicationMigration {
 			System.out.println(String.format("le mode est '%s' OU '%s'", MODE_AUDIT, MODE_RECOPIE));
 			System.exit(CODE_RETOUR_ERROR);
 		}
+		String user = null;
 		String pass = null;
 		
 		source = new ConnectionConfig();
 		source.setDatabase(cmd.getOptionValue(SRC_DB));
 		source.setDriverName(cmd.getOptionValue(SRC_DC));
 		source.setDatasource(cmd.getOptionValue(SRC_DS));
-		source.setUser(cmd.getOptionValue(SRC_USR));
-		pass = cmd.getOptionValue(SRC_PWD);
-		if (pass==null) {
-			pass= StringUtils.EMPTY;
-		}
-		source.setPass(cmd.getOptionValue(SRC_PWD));
+		user = cmd.getOptionValue(SRC_USR);
+		if (!AD_STRING.equals(user)) {
+			pass = cmd.getOptionValue(SRC_PWD);
+			
+			if (pass==null || EMPTY_STRING.equals(pass)) {
+				pass= StringUtils.EMPTY;
+			}
+			source.setPass(pass);
+		}		
 		
 		destination = new ConnectionConfig();
 		destination.setDatabase(cmd.getOptionValue(DST_DB));
@@ -170,7 +177,8 @@ public class ApplicationMigration {
 				AuditBase auditBase = new AuditBase();
 				auditBase.audit(
 						ConnectionProvider.getConnection(source), 
-						ConnectionProvider.getConnection(destination));
+						ConnectionProvider.getConnection(destination),
+						destination.getDatabase());
 				
 			} else if (MODE_RECOPIE.equals(mode)) {
 								

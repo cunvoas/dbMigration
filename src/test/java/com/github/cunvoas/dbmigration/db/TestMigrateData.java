@@ -31,12 +31,12 @@ public class TestMigrateData {
 		boolean truncate=true;
 		tested = new MigrateData();
 		try {
-			tested.setSourceConn(ConnectionProvider.getSource());
-			tested.setDestinationConn(ConnectionProvider.getDestination());
+			tested.setSourceConn(ConnectionProvider.getSourceFromProperties());
+			tested.setDestinationConn(ConnectionProvider.getDestinationFromProperties());
 			
 			MetaData metaData = new MetaData();
-			metaData.setSource(ConnectionProvider.getSource());
-			metaData.setDestination(ConnectionProvider.getDestination());
+			metaData.setSource(ConnectionProvider.getSourceFromProperties());
+			metaData.setDestination(ConnectionProvider.getDestinationFromProperties());
 			
 			List<String> tablesList = metaData.getSourceTables();
 			
@@ -81,11 +81,11 @@ public class TestMigrateData {
 	public void testMigrateOneTable() {
 		tested = new MigrateData();
 		try {
-			tested.setSourceConn(ConnectionProvider.getSource());
-			tested.setDestinationConn(ConnectionProvider.getDestination());
+			tested.setSourceConn(ConnectionProvider.getSourceFromProperties());
+			tested.setDestinationConn(ConnectionProvider.getDestinationFromProperties());
 			tested.migrate("locales_source", true);
 			
-			Connection connection = ConnectionProvider.getDestination();
+			Connection connection = ConnectionProvider.getDestinationFromProperties();
 			Statement s = connection.createStatement();
 			ResultSet rSet = s.executeQuery("SELECT * FROM locales_source ");
 			if (rSet.next()) {

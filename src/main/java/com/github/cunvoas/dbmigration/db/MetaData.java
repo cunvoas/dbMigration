@@ -11,13 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.cunvoas.dbmigration.config.ExclusionConfig;
-import com.github.cunvoas.dbmigration.util.ConnectionProvider;
 import com.github.cunvoas.dbmigration.util.MigrationException;
 
 public class MetaData {
 	
 	private Connection source = null;
 	private Connection destination =  null;
+	private String destinationDatabase =  null;
 	
 	private static final String SQLSERVER_TABLES =  "SELECT TABLE_NAME FROM %s.INFORMATION_SCHEMA.Tables WHERE TABLE_TYPE = 'BASE TABLE'";
 	private static final String MARIADB_TABLES =  "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_SCHEMA = '%s'";
@@ -141,7 +141,7 @@ public class MetaData {
 		try {
 			conn = this.source;
 			st = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			rs = st.executeQuery(String.format(SQLSERVER_TABLES, ConnectionProvider.getSourceDatabase()));
+			rs = st.executeQuery(String.format(SQLSERVER_TABLES, this.destinationDatabase));
 			while(rs.next()) {
 				ret.add(rs.getString("TABLE_NAME").toLowerCase());
 			}
@@ -172,7 +172,7 @@ public class MetaData {
 		try {
 			conn = this.destination;
 			st = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-			rs = st.executeQuery(String.format(MARIADB_TABLES, ConnectionProvider.getDestinationDatabase()));
+			rs = st.executeQuery(String.format(MARIADB_TABLES, this.destinationDatabase));
 			while(rs.next()) {
 				ret.add(rs.getString("TABLE_NAME").toLowerCase());
 			}
@@ -204,5 +204,14 @@ public class MetaData {
 	 */
 	public void setDestination(Connection destination) {
 		this.destination = destination;
+	}
+
+
+	/**
+	 * Setter for destinationDatabase.
+	 * @param destinationDatabase the destinationDatabase to set
+	 */
+	public final void setDestinationDatabase(String destinationDatabase) {
+		this.destinationDatabase = destinationDatabase;
 	}
 }
